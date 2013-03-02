@@ -1,3 +1,4 @@
 body {
-    background-color: pink; 
+    background: url('../img/bk.jpg') repeat;
+    padding-top: 60px;
 }
