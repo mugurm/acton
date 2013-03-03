@@ -14,11 +14,14 @@
 
     <!-- Main sample application -->
     <script src="src/js/application.js" type="text/javascript" charset="utf-8"></script>
-    <link href="src/css/style.css" rel="stylesheet">
 
-    <!-- Bootstrap -->
+    <!-- Styles -->
     <link href="libs/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
     <!-- <link href="libs/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen"> -->
+    
+    <!-- Less Styles, Less files go BEFORE script -->
+    <link href="src/css/style.less" rel="stylesheet/less">
+    <script src="libs/less-1.3.3.min.js" type="text/javascript" charset="utf-8"></script>
 
     <title>Acton!</title>
 </head>
@@ -56,8 +59,16 @@
       </div>
 
       <div class="row">
-          <div class="span12">
+        <div class="span12">
             List of actons.
+
+            <div class="task">
+                <div class="task-sender pull-left">Sebastian (DevsAr)</div> 
+                <div class="task-recipients pull-left">Me and 2 others</div>
+                <div class="task-description">We need a new logo for PyCON</div>
+                <div class="task-exipre">2 weeks</div>
+            </div>
+
         </div>
       </div>
     </div> <!-- /container -->
