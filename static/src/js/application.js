@@ -15,7 +15,19 @@ function init () {
   };
 
   Task = Backbone.Model.extend({
-
+    defaults: function() {
+      return {
+        description: "no description...",
+        can_change: false,
+        can_forward: false,
+        expire: "2014-03-03T23:28:49",
+        is_offer: false,
+        bounty: 0,
+        is_to_group: false,
+        archived: false,
+        status: "PE"
+      };
+    }
   });
 
   TaskList = Backbone.Collection.extend({

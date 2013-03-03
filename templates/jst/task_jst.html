@@ -16,8 +16,8 @@
                 <i class="icon-forward"></i>
             <% } %>
             <span class="task-sender"><%= sender.display_name %></span> to 
-            <span class="task-recipients"><%= recipients %></span>
-            <span class="task-expire pull-right"><%= expire %></span>
+            <span class="task-recipients"><%= recipients[0].to_user.display_name %></span>
+            <span class="task-expire pull-right">Expires <%= moment(expire).fromNow() %></span>
         </div>
         <blockquote class="task-description">
             <p><%= description %></p>
