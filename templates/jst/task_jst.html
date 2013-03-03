@@ -15,7 +15,7 @@
             <% if( typeof isForwarded === "boolean") { %>
                 <i class="icon-forward"></i>
             <% } %>
-            <span class="task-sender"><%= sender %></span> to 
+            <span class="task-sender"><%= sender.display_name %></span> to 
             <span class="task-recipients"><%= recipients %></span>
             <span class="task-expire pull-right"><%= expire %></span>
         </div>
@@ -23,19 +23,23 @@
             <p><%= description %></p>
         </blockquote>
         <div class="task-footer clearfix">
+
+            <% if( typeof tags !== "undefined") { %>
             <span class="task-tags">
             <% _.each(tags, function(i) { %>  
                 <span class="label label-info"><%= i %> </span>
             <% }); %>
             </span>
+            <% } %>
+
             <span class="task-actions pull-right">
-                <% if( canForward ) { %>
+                <% if( can_forward ) { %>
                 <div class="btn-group">
                     <button class="btn btn-mini">Forward <i class="icon-forward"></i></button>
                 </div>
                 <% } %>
                 <div class="btn-group">
-                  <% if( canChange ) { %>  
+                  <% if( can_change ) { %>  
                   <button class="btn btn-mini">Change <i class="icon-pencil"></i></button>
                   <% } %>  
                   <button class="btn btn-mini btn-danger">No</button>

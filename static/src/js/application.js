@@ -100,7 +100,7 @@ function init () {
   });
 
   AppView = Backbone.View.extend({
-    el: $("main-tasks-list"),
+    el: $("main-content"),
 
     initialize: function(){
       this.listenTo(Tasks, 'add', this.addOne);
@@ -111,7 +111,7 @@ function init () {
 
     addOne: function(task) {
       var view = new TaskView({model: task});
-      this.$("#tasks-list").append(view.render().el);
+      $("#main-tasks-list").append(view.render().el);
     },
 
     addAll: function() {
