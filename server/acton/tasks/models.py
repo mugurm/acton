@@ -23,9 +23,16 @@ SUBSCRIBER_TYPE = (
     ('WA', 'Watcher')
 )
 
+QUOTE_STATUS = (
+    ('PE', 'Pending'),
+    ('AC', 'Accepted'),
+    ('RE', 'Rejected'),
+)
+
 class Task(models.Model):
     creator = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="created_tasks")
-    taken_by = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="taken_tasks")
+    taken_by = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="taken_tasks", null=True, blank=True)
+    to_users = models.ManyToManyField(settings.AUTH_USER_MODEL)
     task_id = models.CharField(max_length=36) #uuid
     title = models.CharField(max_length=64)
     status = models.CharField(max_length=2, choices=TASK_STATUS)
@@ -34,8 +41,13 @@ class Task(models.Model):
     bounty = models.IntegerField(null=True, blank=True)
     archived = models.BooleanField(default=False)
 
+    def __unicode__(self):
+        return u"%s: %s" % (self.creator.email, self.title)
+
+
 class Update(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    task = models.ForeignKey(Task)
     update_type = models.CharField(max_length=2, choices=UPDATE_TYPE)
     message = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
@@ -47,6 +59,7 @@ class Quote(models.Model):
     price = models.IntegerField()
     deliver_date = models.DateTimeField()
     details = models.TextField()
+    status = models.CharField(max_length=2, choices=QUOTE_STATUS)
 
 class Subscriber(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
