@@ -1,1 +1,17 @@
 {% extends "base.html" %}
+
+{% block content %}
+    
+    <div class="row">
+        <div class="span12">
+            {% include "blocks/create_block.html" %}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="span12">
+            {% include "blocks/placeholder_tasks_block.html" %}
+        </div>
+    </div>
+
+{% endblock %}
