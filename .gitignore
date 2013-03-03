@@ -36,3 +36,5 @@ nosetests.xml
 
 # Mac OSX (Mugur)
 .DS_Store
+
+acton/test.db
