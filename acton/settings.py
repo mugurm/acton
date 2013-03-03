@@ -148,6 +148,7 @@ INSTALLED_APPS = (
 
 AUTH_USER_MODEL = "accounts.User"
 ACCOUNT_ACTIVATION_DAYS = 7
+LOGIN_REDIRECT_URL = "/inbox/"
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # A sample logging configuration. The only tangible logging
