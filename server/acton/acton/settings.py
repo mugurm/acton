@@ -1,11 +1,14 @@
 # Django settings for acton project.
 import os
+import sys
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.abspath(os.path.join(PROJECT_DIR, '..'))
+
+sys.path.insert(1, os.path.join(PROJECT_ROOT, 'libs'))
 
 ADMINS = (
     ('Sebastian', 'sebastian.serrano@gmail.com'),
@@ -132,8 +135,9 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     
-    #third
+    #third apps
     'south',
+    'tastypie',
 
     #acton apps
     'accounts',
