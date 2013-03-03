@@ -48,7 +48,7 @@ class DefaultBackend(object):
     """
     def register(self, request, **kwargs):
         """
-        Given a email address and password, register a new
+        Given a username, email address and password, register a new
         user account, which will initially be inactive.
 
         Along with the new ``User`` object, a new
@@ -70,12 +70,13 @@ class DefaultBackend(object):
         class of this backend as the sender.
 
         """
-        email, password = kwargs['email'], kwargs['password1']
+        username, email, password = kwargs['username'], kwargs['email'], kwargs['password1']
         if Site._meta.installed:
             site = Site.objects.get_current()
         else:
             site = RequestSite(request)
-        new_user = RegistrationProfile.objects.create_inactive_user(email, password, site)
+        new_user = RegistrationProfile.objects.create_inactive_user(username, email,
+                                                                    password, site)
         signals.user_registered.send(sender=self.__class__,
                                      user=new_user,
                                      request=request)
