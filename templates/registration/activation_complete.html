@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h3 class="text-center text-success">Activation completed, proceed to <a href="{% url "auth_login" %}">login</a>!</h3>
+<h1>Activation complete.</h1>
+<p class="lead">Congratulations and welcome to a simpler way to get things done.</p>
+<a class="btn btn-large btn-inverse" href="{% url "auth_login" %}">Sign in</a>
 {% endblock %}
