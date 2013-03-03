@@ -1,0 +1,36 @@
+<script type="text/template" id="task-template">
+    <div class="task <% if(isOffer) { print('offer'); } %>">
+        <% if( isOffer ) { %>
+        <div class="task-header">
+            <div class="task-offer">
+                <span class="task-offer-badge">Incentive</span>
+                <span class="task-offer-amount"><strong><%= offer_amount %></strong></span>
+            </div>
+        </div>
+        <% } %>
+        <div class="task-info">
+            <span class="task-sender"><%= sender %></span> to 
+            <span class="task-recipients"><%= recipients %><i class="icon-user"></i></span>
+            <span class="task-expire pull-right"><%= expire %></span>
+        </div>
+        <blockquote class="task-description">
+            <p><%= description %></p>
+        </blockquote>
+        <div class="task-footer clearfix">
+            <span class="task-tags">
+                <span class="label label-important">pycon</span>
+                <span class="label label-important">work</span>
+            </span>
+            <span class="task-actions pull-right">
+                <div class="btn-group">
+                    <button class="btn btn-mini">Forward <i class="icon-forward"></i></button>
+                </div>
+                <div class="btn-group">
+                  <button class="btn btn-mini">Change <i class="icon-pencil"></i></button>
+                  <button class="btn btn-mini btn-danger">No</button>
+                  <button class="btn btn-mini btn-success">Yes</button>
+                </div>
+            </span>
+        </div>
+    </div>
+</script>

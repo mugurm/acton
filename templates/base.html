@@ -17,6 +17,7 @@
     {# <script src="{% static 'src/js/application.js' %}" type="text/javascript" charset="utf-8"></script> #}
 
     <!-- Styles -->
+    <link href='http://fonts.googleapis.com/css?family=Titillium+Web:900' rel='stylesheet' type='text/css'>
     <link href="{% static 'libs/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" media="screen">
     <!-- <link href="{% static 'libs/bootstrap/css/bootstrap-responsive.min.css' %}" rel="stylesheet" media="screen"> -->
     
@@ -54,6 +55,9 @@
     <div id="main_content" class="container">
       {% block content %}{% endblock %}
     </div> <!-- /container -->
+
+    <!-- Include JST (JavaScript templates) -->
+    {% include "jst/task_jst.html" %}
 
 </body>
 </html>

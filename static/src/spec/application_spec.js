@@ -4,6 +4,8 @@ describe("Acton app", function() {
   beforeEach(function() {
     container = $("#spec_container");
     $("body").append(container);
+    window.initializeTemplates();
+
   });
 
   afterEach(function() {
@@ -18,7 +20,9 @@ describe("Acton app", function() {
     var $task;
 
     beforeEach(function() {
-      $task = $(JST.task(JST.task_json_0));
+      $("body").append(JST.task(JST.task_json_0));
+      expect($("body")).toContain(".task");
+      $task = $(".task");
     });
 
     afterEach(function() {
@@ -36,19 +40,6 @@ describe("Acton app", function() {
       expect($task).toContain(".task-footer");
       expect($task).toContain(".task-actions");
       expect($task).toContain(".task-description");
-    });
-
-    it("can be attached to body.", function() {
-      $("body").append($task);
-      expect($("body")).toContain(".task");
-    });
-
-    it("can create regular tasks.", function() {
-      $task = $(JST.task(_.extend(JST.task_json_0, {
-        isIncetive: false
-      })));
-
-      
     });
 
   });
