@@ -12,11 +12,22 @@
     box-shadow: 0 1px 10px hsla(0, 0%, 0%, 0.1);
 }
 
+.side-pad (@pad: 4px) {
+    padding-left: @pad;
+    padding-right: @pad;
+}
+
 // General setup
 
 body {
     background: url('../img/bk.jpg') repeat;
     padding-top: 60px;
+}
+
+.create-new-container {
+    input {
+        width: 400px;
+    }
 }
 
 .task {
@@ -28,12 +39,17 @@ body {
     border: 1px solid #ccc;
 
     .task-info{
-        padding-left: 4px;
-        padding-right: 4px;
+        .side-pad;
+    }
+
+    .task-footer{
+        .side-pad;
+        padding-bottom: 4px;
     }
 
     .task-description {
         margin-top: 10px;
+        margin-bottom: 5px;
     }
 
     .task-sender {
