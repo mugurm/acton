@@ -24,12 +24,6 @@ UPDATE_TYPE = (
     ('ME', 'Message'),
 )
 
-SUBSCRIBER_TYPE = (
-    ('CR', 'Creator'),
-    ('AS', 'Assigned'),
-    ('WA', 'Watcher')
-)
-
 QUOTE_STATUS = (
     ('PE', 'Pending'),
     ('AC', 'Accepted'),
@@ -37,20 +31,22 @@ QUOTE_STATUS = (
 )
 
 class Task(models.Model):
-    creator = models.ForeignKey(User, related_name="created_tasks")
-    taken_by = models.ForeignKey(User, related_name="taken_tasks", null=True, blank=True)
-    to_users = models.ManyToManyField(User)
+    sender = models.ForeignKey(User, related_name="created_tasks")
+    involved = models.ManyToManyField(User) #all the people ever involve
+    accepted_by = models.ForeignKey(User, related_name="taken_tasks", null=True, blank=True)
     task_id = models.CharField(max_length=36) #uuid
-    title = models.CharField(max_length=64)
-    status = models.CharField(max_length=2, choices=TASK_STATUS)
     description = models.TextField()
-    expire = models.DateTimeField(null=True, blank=True)
-    bounty = models.IntegerField(null=True, blank=True)
+    status = models.CharField(max_length=2, choices=TASK_STATUS)
     archived = models.BooleanField(default=False)
 
-    def __unicode__(self):
-        return u"%s: %s" % (self.creator.email, self.title)
+    #terms
+    expire = models.DateTimeField(null=True, blank=True)
+    bounty = models.IntegerField(null=True, blank=True)
+    can_change = models.BooleanField(default=True)
+    can_forward = models.BooleanField(default=True)
 
+    def __unicode__(self):
+        return u"%s: %s" % (self.sender.email, self.description[:20])
 
 class Update(models.Model):
     user = models.ForeignKey(User)
@@ -68,10 +64,10 @@ class Quote(models.Model):
     details = models.TextField()
     status = models.CharField(max_length=2, choices=QUOTE_STATUS)
 
-class Subscriber(models.Model):
-    user = models.ForeignKey(User)
+class Receipt(models.Model):
+    from_user = models.ForeignKey(User, related_name="tasks_sent")
+    to_user = models.ForeignKey(User, related_name="tasks_received")
     task = models.ForeignKey(Task)
-    role = models.CharField(max_length=2, choices=SUBSCRIBER_TYPE)
 
 class Attachment(models.Model):
     task = models.ForeignKey(Task)
