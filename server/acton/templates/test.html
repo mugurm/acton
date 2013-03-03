@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>  
+    {% load staticfiles %}
+    <meta charset="utf-8" />
+    
+    <!-- External libs -->
+    <script src="{% static 'libs/jquery-1.9.1.min.js' %}" type="text/javascript" charset="utf-8"></script>    
+    <script src="{% static 'libs/underscore-min.js' %}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static 'libs/backbone-min.js' %}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static 'libs/bootstrap/js/bootstrap.min.js' %}" type="text/javascript" charset="utf-8"></script>
+
+    <link href="{% static 'libs/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" media="screen">
+
+    <!-- Less Styles, Less files go BEFORE script -->
+    <link href="{% static 'src/css/style.less' %}" rel="stylesheet/less">
+    <script src="{% static 'libs/less-1.3.3.min.js' %}" type="text/javascript" charset="utf-8"></script>
+     
+    <!-- Jasmine testing lib -->
+    <link rel="shortcut icon" type="image/png" href="{% static 'lib/jasmine-1.3.1/jasmine_favicon.png' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'libs/jasmine-1.3.1/jasmine.css' %}">
+    <script src="{% static 'libs/jasmine-1.3.1/jasmine.js' %}" type="text/javascript"></script>
+    <script src="{% static 'libs/jasmine-1.3.1/jasmine-html.js' %}" type="text/javascript"></script>
+    <script src="{% static 'libs/jasmine-jquery.js' %}" type="text/javascript"></script>
+
+    <!-- Source javascript -->
+    <script src="{% static 'src/js/application.js' %}" type="text/javascript" charset="utf-8"></script>
+
+    <!-- Jasmin specs -->
+    <script src="{% static 'src/spec/application_spec.js' %}" type="text/javascript" charset="utf-8"></script>
+
+    <script type="text/javascript">
+        (function() {
+            var jasmineEnv = jasmine.getEnv();
+            jasmineEnv.updateInterval = 1000;
+
+            var htmlReporter = new jasmine.HtmlReporter();
+
+            jasmineEnv.addReporter(htmlReporter);
+
+            jasmineEnv.specFilter = function(spec) {
+                return htmlReporter.specFilter(spec);
+            };
+
+            var currentWindowOnload = window.onload;
+
+            window.onload = function() {
+                if (currentWindowOnload) {
+                    currentWindowOnload();
+                }
+                execJasmine();
+            };
+
+            function execJasmine() {
+                jasmineEnv.execute();
+            }
+        })();
+    </script>
+
+    <title>Acton Tests</title>
+</head>
+<body>
+</body>
+</html>

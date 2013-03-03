@@ -9,6 +9,7 @@ from tasks.api import v1_api
 
 urlpatterns = patterns('',
     url(r'^$', 'acton.views.home', name='home'),
+    url(r'^test/$', 'acton.views.test', name='test'),
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^api/', include(v1_api.urls)),
