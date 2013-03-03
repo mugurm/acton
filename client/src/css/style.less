@@ -1,0 +1,62 @@
+// Shared mixins.
+
+.rounded-corners (@radius: 5px) {
+  -webkit-border-radius: @radius;
+  -moz-border-radius: @radius;
+  -ms-border-radius: @radius;
+  -o-border-radius: @radius;
+  border-radius: @radius;
+}
+
+.box-shadow {
+    box-shadow: 0 1px 10px hsla(0, 0%, 0%, 0.1);
+}
+
+.side-pad (@pad: 4px) {
+    padding-left: @pad;
+    padding-right: @pad;
+}
+
+// General setup
+
+body {
+    background: url('../img/bk.jpg') repeat;
+    padding-top: 60px;
+}
+
+.create-new-container {
+    input {
+        width: 400px;
+    }
+}
+
+.task {
+    .rounded-corners;
+    .box-shadow;
+    // padding: 5px;
+    margin-bottom: 10px;
+    background-color: white;
+    border: 1px solid #ccc;
+
+    .task-info{
+        .side-pad;
+    }
+
+    .task-footer{
+        .side-pad;
+        padding-bottom: 4px;
+    }
+
+    .task-description {
+        margin-top: 10px;
+        margin-bottom: 5px;
+    }
+
+    .task-sender {
+        font-weight: bold;
+    }
+
+    .task-expire {
+        font-weight: bold;
+    }
+}

@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.contrib.auth.models import UserManager as BaseUserManager
 from django.utils import timezone
 
@@ -31,9 +31,21 @@ class UserManager(BaseUserManager):
         u.save(using=self._db)
         return u
 
-class User(AbstractBaseUser):
+class User(AbstractBaseUser, PermissionsMixin):
+    first_name = models.CharField(max_length=32, null=True, blank=True)
+    last_name = models.CharField(max_length=32, null=True, blank=True)
     email = models.EmailField(unique=True, db_index=True)
     remote_user = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+    date_joined = models.DateTimeField(null=True, blank=True)
+
     USERNAME_FIELD = 'email'
 
     objects = UserManager()
+
+    def get_username(self):
+        return self.email
+
+    def get_short_name(self):
+        return self.first_name

@@ -34,4 +34,5 @@ nosetests.xml
 .project
 .pydevproject
 
-*.pyc
+# Mac OSX (Mugur)
+.DS_Store
