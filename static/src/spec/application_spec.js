@@ -4,7 +4,7 @@ describe("Acton app", function() {
   beforeEach(function() {
     container = $("#spec_container");
     $("body").append(container);
-    window.initializeTemplates();
+    window.init();
 
   });
 

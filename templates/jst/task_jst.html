@@ -1,20 +1,22 @@
 <script type="text/template" id="task-template">
-    <div class="task <% if(isOffer) { print('offer'); } %>">
-        <% if( isOffer ) { %>
+    <div class="task <% if(is_offer) { print('offer'); } %>">
+        <% if( is_offer ) { %>
         <div class="task-header">
             <div class="task-offer">
                 <span class="task-offer-badge">Incentive</span>
-                <span class="task-offer-amount"><strong><%= offer_amount %></strong></span>
+                <span class="task-offer-amount"><strong><%- bounty %></strong></span>
             </div>
         </div>
         <% } %>
         <div class="task-info">
-            <span class="task-sender"><%= sender %></span> to 
-            <span class="task-recipients"><%= recipients %>
-                <% if( isToGroup ) { %>
+            <% if( is_to_group ) { %>
                 <i class="icon-user"></i>
-                <% } %>
-            </span>
+            <% } %>
+            <% if( typeof isForwarded === "boolean") { %>
+                <i class="icon-forward"></i>
+            <% } %>
+            <span class="task-sender"><%= sender %></span> to 
+            <span class="task-recipients"><%= recipients %></span>
             <span class="task-expire pull-right"><%= expire %></span>
         </div>
         <blockquote class="task-description">

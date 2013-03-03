@@ -12,6 +12,7 @@ function init () {
   // Compile the JS templates.
   JST = {
     task_json_0: {
+        isForwarded: false,
         isToGroup: true,
         isOffer: true,
         offer_amount: "$825",
@@ -25,6 +26,7 @@ function init () {
     },
 
     task_json_1: {
+        isForwarded: true,
         isToGroup: false,
         isOffer: false,
         sender: "Sebastian (Devsar)",
@@ -37,6 +39,7 @@ function init () {
     },
 
     task_json_2: {
+        isForwarded: false,
         isToGroup: false,
         isOffer: false,
         sender: "Sebastian Serrano",
@@ -49,11 +52,12 @@ function init () {
     },
 
     task_json_3: {
+        isForwarded: false,
         isToGroup: false,
         isOffer: false,
         sender: "Erin Bajornas",
         recipients: "just you",
-        expire: "3h at 7:22pm",
+        expire: "7:22pm",
         description: "Wanna get ramen tonight?",
         canForward: false,
         canChange: false,
@@ -120,14 +124,6 @@ function init () {
 $(function() {
 
     init();
-
-    // TESTING: Create a list with template and attach to body.
-    $list = $("#main-tasks-list");
-
-    $list.append(JST.task(JST.task_json_1));
-    $list.append(JST.task(JST.task_json_0));
-    $list.append(JST.task(JST.task_json_3));
-    $list.append(JST.task(JST.task_json_2));
 
     var App = new AppView();
 });
