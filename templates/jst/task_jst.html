@@ -10,7 +10,11 @@
         <% } %>
         <div class="task-info">
             <span class="task-sender"><%= sender %></span> to 
-            <span class="task-recipients"><%= recipients %><i class="icon-user"></i></span>
+            <span class="task-recipients"><%= recipients %>
+                <% if( isToGroup ) { %>
+                <i class="icon-user"></i>
+                <% } %>
+            </span>
             <span class="task-expire pull-right"><%= expire %></span>
         </div>
         <blockquote class="task-description">
@@ -18,15 +22,20 @@
         </blockquote>
         <div class="task-footer clearfix">
             <span class="task-tags">
-                <span class="label label-important">pycon</span>
-                <span class="label label-important">work</span>
+            <% _.each(tags, function(i) { %>  
+                <span class="label label-info"><%= i %> </span>
+            <% }); %>
             </span>
             <span class="task-actions pull-right">
+                <% if( canForward ) { %>
                 <div class="btn-group">
                     <button class="btn btn-mini">Forward <i class="icon-forward"></i></button>
                 </div>
+                <% } %>
                 <div class="btn-group">
+                  <% if( canChange ) { %>  
                   <button class="btn btn-mini">Change <i class="icon-pencil"></i></button>
+                  <% } %>  
                   <button class="btn btn-mini btn-danger">No</button>
                   <button class="btn btn-mini btn-success">Yes</button>
                 </div>

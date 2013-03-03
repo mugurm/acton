@@ -17,17 +17,17 @@ describe("Acton app", function() {
   });
 
   describe("task templates", function() {
-    var $task;
+    var $incentiveTask;
 
     beforeEach(function() {
       $("body").append(JST.task(JST.task_json_0));
       expect($("body")).toContain(".task");
-      $task = $(".task");
+      $incentiveTask = $(".task");
     });
 
     afterEach(function() {
-      $task.remove();
-      $task = null;
+      $incentiveTask.remove();
+      $incentiveTask = null;
     });
     
     it("can create a task element.", function() {
@@ -35,11 +35,11 @@ describe("Acton app", function() {
       expect(JST).toBeDefined();
       expect(JST.task).toBeDefined();
 
-      expect($task).toContain(".task-header");
-      expect($task).toContain(".task-offer");
-      expect($task).toContain(".task-footer");
-      expect($task).toContain(".task-actions");
-      expect($task).toContain(".task-description");
+      expect($incentiveTask).toContain(".task-header");
+      expect($incentiveTask).toContain(".task-offer");
+      expect($incentiveTask).toContain(".task-footer");
+      expect($incentiveTask).toContain(".task-actions");
+      expect($incentiveTask).toContain(".task-description");
     });
 
   });
