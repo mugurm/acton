@@ -5,12 +5,13 @@
 {% block content %}
 <div class="row">
   <div class="span12">
-      <div class="create-new-container">
-        <h2>login</h2>
+      <div>
+          <h1>Sign In</h1>
+          <p class="lead">Enter with your credentials</p>
           <form action="." method="POST" accept-charset="utf-8">
             {% csrf_token %}
             {{ form|crispy }}
-            <button type="submit" class="btn">Register</button>
+            <button type="submit" class="btn btn-large btn-inverse">Continue</button>
           </form>                
       </div>
   </div>

@@ -3,16 +3,16 @@
 
 
 {% block content %}
-<h3>Singup</h3>
 <div class="row">
   <div class="span12">
-      <div class="create-new-container">
-          <form action="." method="POST" accept-charset="utf-8">
-            {% csrf_token %}
-            {{ form|crispy }}
-            <button type="submit" class="btn">Register</button>
-          </form>                
-      </div>
+    <div>
+      <h1>Register</h1>
+      <p class="lead">Sign up with your email address.</p>
+      <form action="." method="POST" accept-charset="utf-8">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-large btn-inverse">Continue</button>
+      </form>
   </div>
 </div>
 {% endblock %}
