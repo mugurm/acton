@@ -33,10 +33,36 @@ body {
 .task {
     .rounded-corners;
     .box-shadow;
-    // padding: 5px;
     margin-bottom: 10px;
     background-color: white;
     border: 1px solid #ccc;
+
+    &.offer {
+        background-color: #fefbed;
+
+        .task-header {
+            background-color: #fff6d0;
+        }
+    }
+
+    .task-header {
+        .side-pad;
+        background-color: ;
+        border-bottom: 1px solid #ccc;
+        margin-bottom: 2px;
+
+        .task-offer {
+            font-size: 163%;
+            line-height: 40px;
+
+            .task-offer-badge {
+            }
+
+            .task-offer-amount {
+                float:right;
+            }
+        }
+    }
 
     .task-info{
         .side-pad;
