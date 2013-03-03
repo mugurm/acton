@@ -8,22 +8,57 @@
 
 // Javascript templates. TODO: move to own file.
 JST = {
-    task_json: {
+    task_json_0: {
+        isOffer: true,
         offer_amount: "$825",
-        sender: "Sebastian Serrano",
+        sender: "Sebastian (Devsar)",
         recipients: "you and 2 others",
         expire: "2 weeks",
-        description: "We need a new logo for PyCON"
+        description: "We need a new logo for PyCON.",
+        canForward: true,
+        canChange: true
+    },
+
+    task_json_1: {
+        isOffer: false,
+        sender: "Sebastian (Devsar)",
+        recipients: "you",
+        expire: "1 week",
+        description: "PyCON 2013 Banner. Can you make sure the printer has all the artwork and answer any other questions they might have?",
+        canForward: true,
+        canChange: true
+    },
+
+    task_json_2: {
+        isOffer: false,
+        sender: "Sebastian Serrano",
+        recipients: "just you",
+        expire: "3 days",
+        description: "Enough work, let's meet up this weekend!",
+        canForward: true,
+        canChange: true
+    },
+
+    task_json_3: {
+         isOffer: false,
+        sender: "Erin Bajornas",
+        recipients: "just you",
+        expire: "3h at 7:22pm",
+        description: "Wanna get ramen tonight?",
+        canForward: false,
+        canChange: false
     },
 
     task: _.template(
-        '<div class="task offer">\n' +
+        '<div class="task <% if(isOffer) { print("offer"); } %>">\n' +
+            '<% if( isOffer ) { %>' +
             '<div class="task-header">\n' +
                 '<div class="task-offer">\n' +
                     '<span class="task-offer-badge">Incentive</span>\n' +
                     '<span class="task-offer-amount"><strong><%= offer_amount %></strong></span>\n' +
                 '</div>\n' +
             '</div>\n' +
+            '<% } %>' +
             '<div class="task-info">\n' +
                 '<span class="task-sender"><%= sender %></span> to \n' +
                 '<span class="task-recipients"><%= recipients %><i class="icon-user"></i></span>\n' +
@@ -55,8 +90,14 @@ JST = {
 
 $(function() {
 
-    // TODO: replace body with #main_task_list when that exist.
-    $body = $("body");
-    $t1 = $(JST.task(JST.task_json));
-    $body.append($t1);
+    // TESTING: Create a list with template and attach to body.
+    $list = $("#main-tasks-list");
+    $t0 = $(JST.task(JST.task_json_0));
+    $t1 = $(JST.task(JST.task_json_1));
+    $t2 = $(JST.task(JST.task_json_2));
+    $t3 = $(JST.task(JST.task_json_3));
+    $list.append($t1);
+    $list.append($t0);
+    $list.append($t3);
+    $list.append($t2);
 });

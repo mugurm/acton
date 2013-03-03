@@ -11,14 +11,14 @@ describe("Acton app", function() {
   });
 
   it("can run jasmine tests.", function() {
-    expect(true).toBeTruthy();    
+    expect(true).toBeTruthy();
   });
 
   describe("task templates", function() {
     var $task;
 
     beforeEach(function() {
-      $task = $(JST.task(JST.task_json));    
+      $task = $(JST.task(JST.task_json_0));
     });
 
     afterEach(function() {
@@ -41,6 +41,14 @@ describe("Acton app", function() {
     it("can be attached to body.", function() {
       $("body").append($task);
       expect($("body")).toContain(".task");
+    });
+
+    it("can create regular tasks.", function() {
+      $task = $(JST.task(_.extend(JST.task_json_0, {
+        isIncetive: false
+      })));
+
+      
     });
 
   });
