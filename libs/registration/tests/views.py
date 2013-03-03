@@ -178,11 +178,11 @@ class RegistrationViewTests(TestCase):
                                'email': 'alice@example.com',
                                'password1': 'swordfish',
                                'password2': 'swordfish'})
-        profile = RegistrationProfile.objects.get(user__username='alice')
+        profile = RegistrationProfile.objects.get(user__email='alice@example.com')
         response = self.client.get(reverse('registration_activate',
                                            kwargs={'activation_key': profile.activation_key}))
         self.assertRedirects(response, success_redirect)
-        self.failUnless(User.objects.get(username='alice').is_active)
+        self.failUnless(User.objects.get(email='alice').is_active)
 
     def test_invalid_activation(self):
         """

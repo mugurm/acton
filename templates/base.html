@@ -14,7 +14,7 @@
     <!-- Source javascript -->
 
     <!-- Main sample application -->
-    <script src="{% static 'src/js/application.js' %}" type="text/javascript" charset="utf-8"></script>
+    {# <script src="{% static 'src/js/application.js' %}" type="text/javascript" charset="utf-8"></script> #}
 
     <!-- Styles -->
     <link href="{% static 'libs/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" media="screen">
@@ -43,7 +43,7 @@
               <li><a href="#contact">Contact</a></li>
             </ul> -->
             <ul class="nav pull-right">
-              <li><a href="#">Register</a></li>
+              <li><a href="{% url "registration_register" %}">Register</a></li>
               <li><a href="#about">Sign In</a></li>
             </ul>
           </div><!--/.nav-collapse -->
