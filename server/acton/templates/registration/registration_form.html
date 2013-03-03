@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+<div class="row">
+  <div class="span12">
+      <div class="create-new-container">
+          <form action="." method="get" accept-charset="utf-8">
+              {% crispy form %}
+          </form>                
+      </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,6 +1,13 @@
 from django.conf import settings
 from django.db import models
 
+try:
+    from django.contrib.auth import get_user_model
+except ImportError: # django < 1.5
+    from django.contrib.auth.models import User
+else:
+    User = get_user_model()
+
 TASK_STATUS = (
     ('PE', 'Pending'),
     ('AC', 'Accepted'),
@@ -30,9 +37,9 @@ QUOTE_STATUS = (
 )
 
 class Task(models.Model):
-    creator = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="created_tasks")
-    taken_by = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="taken_tasks", null=True, blank=True)
-    to_users = models.ManyToManyField(settings.AUTH_USER_MODEL)
+    creator = models.ForeignKey(User, related_name="created_tasks")
+    taken_by = models.ForeignKey(User, related_name="taken_tasks", null=True, blank=True)
+    to_users = models.ManyToManyField(User)
     task_id = models.CharField(max_length=36) #uuid
     title = models.CharField(max_length=64)
     status = models.CharField(max_length=2, choices=TASK_STATUS)
@@ -46,7 +53,7 @@ class Task(models.Model):
 
 
 class Update(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    user = models.ForeignKey(User)
     task = models.ForeignKey(Task)
     update_type = models.CharField(max_length=2, choices=UPDATE_TYPE)
     message = models.TextField()
@@ -54,7 +61,7 @@ class Update(models.Model):
     quote = models.ForeignKey('tasks.Quote', null=True, blank=True)
 
 class Quote(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    user = models.ForeignKey(User)
     task = models.ForeignKey(Task)
     price = models.IntegerField()
     deliver_date = models.DateTimeField()
@@ -62,7 +69,7 @@ class Quote(models.Model):
     status = models.CharField(max_length=2, choices=QUOTE_STATUS)
 
 class Subscriber(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    user = models.ForeignKey(User)
     task = models.ForeignKey(Task)
     role = models.CharField(max_length=2, choices=SUBSCRIBER_TYPE)
 

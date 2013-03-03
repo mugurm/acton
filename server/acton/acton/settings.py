@@ -73,7 +73,7 @@ STATIC_ROOT = os.path.join(PROJECT_ROOT, 'public')
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
-STATIC_URL = '/static/'
+STATIC_URL = '/public/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
@@ -138,6 +138,8 @@ INSTALLED_APPS = (
     #third apps
     'south',
     'tastypie',
+    'registration',
+    'crispy_forms',
 
     #acton apps
     'accounts',
@@ -145,6 +147,7 @@ INSTALLED_APPS = (
 )
 
 AUTH_USER_MODEL = "accounts.User"
+ACCOUNT_ACTIVATION_DAYS = 7
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
