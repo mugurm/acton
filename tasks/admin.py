@@ -1,19 +1,19 @@
 from django.contrib import admin
-from .models import Task, Update, Receipt
+from .models import Task, Update, Recipient
 
 admin.site.register(Update)
-admin.site.register(Receipt)
+admin.site.register(Recipient)
 
 class UpdateInline(admin.TabularInline):
     model = Update
 
-class ReceiptInline(admin.TabularInline):
-    model = Receipt
+class RecipientInline(admin.TabularInline):
+    model = Recipient
 
 class TaskAdmin(admin.ModelAdmin):
     inlines = [
         UpdateInline,
-        ReceiptInline,
+        RecipientInline,
     ]
 
 admin.site.register(Task, TaskAdmin)

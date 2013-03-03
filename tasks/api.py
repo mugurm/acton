@@ -9,7 +9,7 @@ except ImportError: # django < 1.5
 else:
     User = get_user_model()
 
-from .models import Task, Update, Receipt
+from .models import Task, Update, Recipient
 
 class UserResource(ModelResource):
     class Meta:
@@ -23,13 +23,13 @@ class UserResource(ModelResource):
 class TaskResource(ModelResource):
     sender = fields.ForeignKey(UserResource, 'sender', full=True)
     updates = fields.ToManyField('tasks.api.UpdateResource', 'update_set', null=True, full=True)
-    receipts = fields.ToManyField('tasks.api.ReceiptResource', 'receipt_set', null=True, full=True)
+    recipients = fields.ToManyField('tasks.api.RecipientResource', 'recipient_set', null=True, full=True)
 
     class Meta:
         queryset = Task.objects.all()
 
     def dehydrate(self, bundle):
-        bundle.data['is_to_group'] = bundle.obj.receipt_set.count() > 1 
+        bundle.data['is_to_group'] = bundle.obj.recipient_set.count() > 1 
         bundle.data['is_offer'] = bundle.obj.bounty and bundle.obj.bounty > 0
         return bundle
 
@@ -41,12 +41,12 @@ class UpdateResource(ModelResource):
     class Meta:
         queryset = Update.objects.all()
 
-class ReceiptResource(ModelResource):
+class RecipientResource(ModelResource):
     from_user = fields.ForeignKey(UserResource, 'from_user', full=True)
     to_user = fields.ForeignKey(UserResource, 'to_user', full=True)
     task = fields.ForeignKey(TaskResource, 'task')
     class Meta:
-        queryset = Receipt.objects.all()
+        queryset = Recipient.objects.all()
 
 
 v1_api = Api(api_name='v1')

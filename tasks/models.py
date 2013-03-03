@@ -64,7 +64,7 @@ class Quote(models.Model):
     details = models.TextField()
     status = models.CharField(max_length=2, choices=QUOTE_STATUS)
 
-class Receipt(models.Model):
+class Recipient(models.Model):
     from_user = models.ForeignKey(User, related_name="tasks_sent")
     to_user = models.ForeignKey(User, related_name="tasks_received")
     task = models.ForeignKey(Task)
