@@ -278,4 +278,11 @@ $(function() {
     Backbone.history.start({ pushState: pushState });
 
     router.navigate("/inbox/inbox", {trigger: true});
+
+    myDataRef = new Firebase('https://acton.firebaseio.com/messages');
+    myDataRef.on('child_added', function(snapshot) {
+      var message = snapshot.val();
+      // console.log(message);
+      app.fetchFilteredTasks();
+    });
 });

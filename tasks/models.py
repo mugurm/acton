@@ -68,6 +68,9 @@ class Task(models.Model):
     can_change = models.BooleanField(default=True)
     can_forward = models.BooleanField(default=True)
 
+    class Meta:
+        ordering = ("-id",)
+
     def __unicode__(self):
         if self.sender and self.description:
             return u"%s: %s" % (self.sender.email, self.description[:20])
