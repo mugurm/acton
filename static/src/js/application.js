@@ -15,6 +15,7 @@ function init () {
   };
 
   Task = Backbone.Model.extend({
+    url: '/api/v1/task/',
     defaults: function() {
       return {
         description: "no description...",
@@ -81,6 +82,7 @@ function init () {
 
     events: {
       "keyup .task-input": "parse",
+      "keypress .task-input": "create",
     },
 
     parse: function() {
@@ -117,9 +119,30 @@ function init () {
       this.parse_bounty.html("$" + this.val_bounty);
     },
 
-    render: function() {
-      this.$el.html(this.template(this.model.toJSON()));
-      return this;
+    create: function(e) {
+      if (e.keyCode != 13) return;
+      if (this.val_users == '' || this.val_description == '') return;
+      
+      var data = {
+        description: this.val_description,
+        users: this.val_users
+      }
+
+      if (this.val_expire != '') {
+        data['expire'] = this.val_expire
+      }
+
+      if (this.val_bounty != '') {
+        data['bounty'] = this.val_bounty
+      }
+
+      var task = new Task(data);
+      task.save();
+      this.input.val('');
+
+      e.preventDefault();
+      this.parse();
+      
     }
 
   });

@@ -46,7 +46,10 @@ class Task(models.Model):
     can_forward = models.BooleanField(default=True)
 
     def __unicode__(self):
-        return u"%s: %s" % (self.sender.email, self.description[:20])
+        if self.sender and self.description:
+            return u"%s: %s" % (self.sender.email, self.description[:20])
+        else:
+            return ""
 
 class Update(models.Model):
     user = models.ForeignKey(User)
