@@ -1,6 +1,8 @@
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.sites.models import RequestSite
 from django.contrib.sites.models import Site
+from django.core.urlresolvers import reverse
 
 from registration import signals
 from registration.forms import RegistrationForm
@@ -77,6 +79,11 @@ class DefaultBackend(object):
             site = RequestSite(request)
         new_user = RegistrationProfile.objects.create_inactive_user(username, email,
                                                                     password, site)
+
+        profile = RegistrationProfile.objects.get(user=new_user)
+        url = request.build_absolute_uri(reverse('registration_activate', args=[profile.activation_key]))
+        messages.add_message(request, messages.INFO, u'During demo follow <a href="%s">%s</a>' % (url,url))
+
         signals.user_registered.send(sender=self.__class__,
                                      user=new_user,
                                      request=request)
