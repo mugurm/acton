@@ -15,6 +15,14 @@ TASK_STATUS = (
     ('CO', 'Completed'),
 )
 
+RECIPIENT_STATUS = (
+    ('PE', 'Pending'),
+    ('AC', 'Accepted'),
+    ('RJ', 'Rejected'),
+    ('CO', 'Completed'),
+)
+
+
 UPDATE_TYPE = (
     ('AC', 'Accept'),
     ('RJ', 'Reject'),
@@ -51,6 +59,17 @@ class Task(models.Model):
         else:
             return ""
 
+    def update_involved(self):
+        self.involved.clear()
+        self.involved.add(self.sender)
+        for recipient in self.recipient_set.all():
+            self.involved.add(recipient.to_user)
+
+    def save(self, * args, ** kwargs):
+        if self.pk:
+            self.update_involved()
+        super(Task, self).save(* args, ** kwargs)
+
 class Update(models.Model):
     user = models.ForeignKey(User)
     task = models.ForeignKey(Task)
@@ -71,6 +90,7 @@ class Recipient(models.Model):
     from_user = models.ForeignKey(User, related_name="tasks_sent")
     to_user = models.ForeignKey(User, related_name="tasks_received")
     task = models.ForeignKey(Task)
+    status = models.CharField(max_length=2, choices=RECIPIENT_STATUS, default='PE')
 
 class Attachment(models.Model):
     task = models.ForeignKey(Task)

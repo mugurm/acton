@@ -36,6 +36,12 @@ class TaskAuthorization(Authorization):
             return True
         return False
 
+    def apply_limits(self, request, object_list):
+        if request.user.is_authenticated():
+            return filter(lambda t: request.user in t.involved.all(), object_list)
+        else:
+            return []
+
     # def read_list(self, object_list, bundle):
     #     # This assumes a ``QuerySet`` from ``ModelResource``.
     #     logging.error("checking is able to read list")
@@ -104,12 +110,31 @@ class TaskResource(ModelResource):
         authentication = SessionAuthentication()
         authorization = TaskAuthorization()
 
-    # def build_filters(self, filters=None):
-    #     if filters is None:
-    #         filters = {}
-    #     orm_filters = super(TaskResource, self).build_filters(filters)
-    #     return orm_filters
+    def build_filters(self, filters=None):
+        if filters is None:
+            filters = {}
+        orm_filters = super(TaskResource, self).build_filters(filters)
+        if "filter" in filters:
+            filter_by = filters['filter']
 
+        return orm_filters
+
+    def get_object_list(self, request):
+        object_list = super(TaskResource, self).get_object_list(request)
+
+        filter_by = request.GET.get('filter', None)
+        if filter_by == 'sent':
+            object_list = object_list.filter(sender=request.user)
+        elif filter_by == 'inbox':
+            object_list = object_list.filter(Q(Q(recipient__to_user=request.user) & Q(recipient__status='PE')))
+        elif filter_by == 'accepted':
+            object_list = object_list.filter(Q(Q(recipient__to_user=request.user) & Q(recipient__status='AC')))
+        elif filter_by == 'rejected':
+            object_list = object_list.filter(Q(Q(recipient__to_user=request.user) & Q(recipient__status='RJ')))
+        elif filter_by == 'completed':
+            object_list = object_list.filter(Q(Q(recipient__to_user=request.user) & Q(recipient__status='CO')))
+
+        return object_list
 
     def dehydrate(self, bundle):
         bundle.data['is_to_group'] = bundle.obj.recipient_set.count() > 1 
@@ -173,6 +198,8 @@ class TaskResource(ModelResource):
 
         for u in users:
             Recipient(from_user=request.user, to_user=u, task=new_bundle.obj).save()
+
+        new_bundle.obj.save()
 
         return new_bundle
 
