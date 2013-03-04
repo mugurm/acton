@@ -6,69 +6,28 @@
  *
  */
 
-// Javascript templates. TODO: move to own file.
+// Javascript templates.
 function init () {
 
   // Compile the JS templates.
   JST = {
-    task_json_0: {
-        isForwarded: false,
-        isToGroup: true,
-        isOffer: true,
-        offer_amount: "$825",
-        sender: "Sebastian (Devsar)",
-        recipients: "you and 2 others",
-        expire: "2 weeks",
-        description: "We need a new logo for PyCON.",
-        canForward: true,
-        canChange: true,
-        tags: ["pycon", "work"]
-    },
-
-    task_json_1: {
-        isForwarded: true,
-        isToGroup: false,
-        isOffer: false,
-        sender: "Sebastian (Devsar)",
-        recipients: "you",
-        expire: "1 week",
-        description: "PyCON 2013 Banner. Can you make sure the printer has all the artwork and answer any other questions they might have?",
-        canForward: true,
-        canChange: true,
-        tags: ["pycon", "work"]
-    },
-
-    task_json_2: {
-        isForwarded: false,
-        isToGroup: false,
-        isOffer: false,
-        sender: "Sebastian Serrano",
-        recipients: "just you",
-        expire: "3 days",
-        description: "Enough work, let's meet up this weekend!",
-        canForward: true,
-        canChange: true,
-        tags: ["friend"]
-    },
-
-    task_json_3: {
-        isForwarded: false,
-        isToGroup: false,
-        isOffer: false,
-        sender: "Erin Bajornas",
-        recipients: "just you",
-        expire: "7:22pm",
-        description: "Wanna get ramen tonight?",
-        canForward: false,
-        canChange: false,
-        tags: ["friend", "food"]
-    },
-
     task: _.template(document.getElementById("task-template").innerText)
   };
 
   Task = Backbone.Model.extend({
-
+    defaults: function() {
+      return {
+        description: "no description...",
+        can_change: false,
+        can_forward: false,
+        expire: "2014-03-03T23:28:49",
+        is_offer: false,
+        bounty: 0,
+        is_to_group: false,
+        archived: false,
+        status: "PE"
+      };
+    }
   });
 
   TaskList = Backbone.Collection.extend({
@@ -190,6 +149,7 @@ function init () {
 
 $(function() {
 
+    // DOM is ready and therefore we can compile templates.
     init();
 
     var App = new AppView();

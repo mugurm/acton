@@ -10,6 +10,7 @@
     <script src="{% static 'libs/underscore-min.js' %}" type="text/javascript" charset="utf-8"></script>
     <script src="{% static 'libs/backbone-min.js' %}" type="text/javascript" charset="utf-8"></script>
     <script src="{% static 'libs/bootstrap/js/bootstrap.min.js' %}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static 'libs/moment.min.js' %}" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript" src="{% static 'libs/backbone-tastypie.js' %}"></script>
     <!-- Source javascript -->
 
@@ -44,8 +45,14 @@
               <li><a href="#contact">Contact</a></li>
             </ul> -->
             <ul class="nav pull-right">
+
+              {% if user.is_authenticated %}             
+              <li><a href="{% url "auth_logout" %}">@{{ user.username }} | Sign out</a></li>              
+              {% else %}
               <li><a href="{% url "registration_register" %}">Register</a></li>
               <li><a href="{% url "auth_login" %}">Sign In</a></li>
+              {% endif %}
+
             </ul>
           </div><!--/.nav-collapse -->
         </div>
