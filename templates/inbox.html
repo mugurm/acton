@@ -1,7 +1,10 @@
 
 {% extends "base.html" %}
 {% load staticfiles %}
-{% block head_javascript %}<script src="{% static 'src/js/application.js' %}" type="text/javascript" charset="utf-8"></script>{% endblock %}
+{% block head_javascript %}
+<script src='https://cdn.firebase.com/v0/firebase.js'></script>
+<script src="{% static 'src/js/application.js' %}" type="text/javascript" charset="utf-8"></script>
+{% endblock %}
 
 {% block content %}
     
@@ -24,5 +27,13 @@
             </section>
         </div>
     </div>
+
+<script>
+  var myDataRef = new Firebase('https://acton.firebaseio.com/messages');
+  myDataRef.on('child_added', function(snapshot) {
+    var message = snapshot.val();
+    console.log(message);
+  });
+</script>
 
 {% endblock %}

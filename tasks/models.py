@@ -41,6 +41,12 @@ QUOTE_STATUS = (
     ('RE', 'Rejected'),
 )
 
+from firebase import firebase
+fbapp = firebase.FirebaseApplication('https://acton.firebaseio.com', None)
+
+def send_message(msg):
+    return fbapp.post('/messages', msg)
+
 class Error(Exception):
     pass
 
@@ -77,6 +83,7 @@ class Task(models.Model):
     def save(self, * args, ** kwargs):
         if self.pk:
             self.update_involved()
+
         super(Task, self).save(* args, ** kwargs)
 
     def accept(self, user):
@@ -92,12 +99,13 @@ class Task(models.Model):
         self.status = 'AC'
         self.accepted_by = user
         self.save()
+        
         for recipient in self.recipient_set.all():
             recipient.status = 'CL'
             recipient.save()
         recipient.status = 'AC'
         recipient.save()
-
+        send_message({'action': 'accept', 'model': 'task', 'id': self.id})
         return self
 
     def reject(self, user):
@@ -119,7 +127,30 @@ class Task(models.Model):
             self.status = 'RJ'
             self.save()
 
+        send_message({'action': 'reject', 'model': 'task', 'id': self.id})
+
         return self
+
+    def complete(self, user):
+        logging.info("completed")
+        try:
+            recipient = self.recipient_set.filter(to_user=user).get()
+        except Recipient.DoesNotExist:
+            raise UnauthorizedError("user is not able")
+
+        if recipient.status != 'AC':
+            raise Error('Task not in accepted status')
+
+        recipient.status = 'CO'
+        recipient.save()
+
+        self.status = 'CO'
+        self.save()
+
+        send_message({'action': 'complete', 'model': 'task', 'id': self.id})
+
+        return self
+
 
 class Update(models.Model):
     user = models.ForeignKey(User)

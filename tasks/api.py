@@ -21,7 +21,7 @@ from tastypie.exceptions import BadRequest
 from tastypie.resources import ModelResource
 from tastypie.utils import trailing_slash
 
-from .models import Task, Update, Recipient
+from .models import Task, Update, Recipient, send_message
 
 
 class TaskAuthorization(Authorization):
@@ -116,6 +116,7 @@ class TaskResource(ModelResource):
     def prepend_urls(self):
         return [
             url(r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/respond%s$" % (self._meta.resource_name, trailing_slash()), self.wrap_view('respond_task'), name="api_respond_task"),
+            url(r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/complete%s$" % (self._meta.resource_name, trailing_slash()), self.wrap_view('complete_task'), name="api_complete_task"),
         ]
 
     def respond_task(self, request, **kwargs):
@@ -132,6 +133,19 @@ class TaskResource(ModelResource):
             obj.reject(request.user)
 
         return self.get_detail(request, ** kwargs)
+
+    def complete_task(self, request, **kwargs):
+        try:
+            obj = self.cached_obj_get(request=request, **self.remove_api_resource_names(kwargs))
+        except ObjectDoesNotExist:
+            return HttpGone()
+        except MultipleObjectsReturned:
+            return HttpMultipleChoices("More than one resource is found at this URI.")
+        
+        obj.complete(request.user)
+
+        return self.get_detail(request, ** kwargs)
+
 
     def build_filters(self, filters=None):
         if filters is None:
@@ -225,6 +239,8 @@ class TaskResource(ModelResource):
             Recipient(from_user=request.user, to_user=u, task=new_bundle.obj).save()
 
         new_bundle.obj.save()
+
+        send_message({'action': 'create', 'model': 'task', 'id': new_bundle.obj.id})
 
         return new_bundle
 
