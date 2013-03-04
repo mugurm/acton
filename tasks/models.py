@@ -1,3 +1,5 @@
+import logging
+
 from django.conf import settings
 from django.db import models
 
@@ -69,6 +71,12 @@ class Task(models.Model):
         if self.pk:
             self.update_involved()
         super(Task, self).save(* args, ** kwargs)
+
+    def accept(self, user):
+        logging.error("accepted")
+
+    def reject(self, user):
+        logging.error("rejected")
 
 class Update(models.Model):
     user = models.ForeignKey(User)

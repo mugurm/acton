@@ -8,15 +8,18 @@ except ImportError: # django < 1.5
 else:
     User = get_user_model()
 
+from django.conf.urls.defaults import url
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.db.models import Q
 
 from tastypie import fields
 from tastypie.api import Api
-from tastypie.resources import ModelResource
 from tastypie.authentication import SessionAuthentication
-from tastypie.authorization import DjangoAuthorization
 from tastypie.authorization import Authorization
+from tastypie.authorization import DjangoAuthorization
 from tastypie.exceptions import BadRequest
+from tastypie.resources import ModelResource
+from tastypie.utils import trailing_slash
 
 from .models import Task, Update, Recipient
 
@@ -110,12 +113,32 @@ class TaskResource(ModelResource):
         authentication = SessionAuthentication()
         authorization = TaskAuthorization()
 
+    def prepend_urls(self):
+        return [
+            url(r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/respond%s$" % (self._meta.resource_name, trailing_slash()), self.wrap_view('respond_task'), name="api_respond_task"),
+        ]
+
+    def respond_task(self, request, **kwargs):
+        try:
+            obj = self.cached_obj_get(request=request, **self.remove_api_resource_names(kwargs))
+        except ObjectDoesNotExist:
+            return HttpGone()
+        except MultipleObjectsReturned:
+            return HttpMultipleChoices("More than one resource is found at this URI.")
+
+        if request.GET.get('accepted', '') == 'true':
+            obj.accept(request.user)
+        else:
+            obj.reject(request.user)
+
+        return self.get_detail(request, ** kwargs)
+
     def build_filters(self, filters=None):
         if filters is None:
             filters = {}
         orm_filters = super(TaskResource, self).build_filters(filters)
-        if "filter" in filters:
-            filter_by = filters['filter']
+        # if "filter" in filters:
+        #     filter_by = filters['filter']
 
         return orm_filters
 
@@ -133,6 +156,8 @@ class TaskResource(ModelResource):
             object_list = object_list.filter(Q(Q(recipient__to_user=request.user) & Q(recipient__status='RJ')))
         elif filter_by == 'completed':
             object_list = object_list.filter(Q(Q(recipient__to_user=request.user) & Q(recipient__status='CO')))
+        elif filter_by == 'all':
+            pass
 
         return object_list
 
