@@ -2,24 +2,13 @@
 
 {% block content %}
     
-    <div class="row">
-        <div class="span12">
-            {% include "blocks/create_block.html" %}
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="span12">
-            {% include "blocks/task_nav_block.html" %}
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="span12">
-            <section id="main-tasks-list">
-                <!-- Dynamically append todos with JS templates here. -->
-            </section>
-        </div>
-    </div>
+<div class="hero-unit">
+  <h1>Acton!</h1>
+  <p>An open protocol to manage distributed work.</p>
+  <p>
+    <a class="btn btn-inverse btn-large" href="{% url "registration_register" %}">Register</a>
+    <a class="btn btn-inverse btn-large" href="{% url "auth_login" %}">Sign In</a>
+  </p>
+</div>
 
 {% endblock %}
