@@ -1,4 +1,5 @@
 import logging
+import uuid
 
 from django.conf import settings
 from django.db import models
@@ -93,6 +94,7 @@ class Task(models.Model):
         """
             Create tasks, does the final save and creates the Recipient objects
         """
+        self.task_id = "%s" % uuid.uuid1()
         self.save()
 
         if users is None:
@@ -110,6 +112,8 @@ class Task(models.Model):
 
         for u in users:
             Recipient(from_user=self.sender, to_user=u, task=self).save()
+
+        self.save()
 
 
     def accept(self, user):

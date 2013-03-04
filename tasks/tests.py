@@ -27,6 +27,7 @@ class SimpleTest(TestCase):
         t = Task(sender=self.user1, description="test task")
         t.create(usernames=[self.user2.username, self.user3.username])
 
+        self.assertEqual(t.involved.count(), 3)
         self.assertEqual(t.recipient_set.count(), 2)
 
         t.reject(self.user2)
