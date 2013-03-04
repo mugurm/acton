@@ -89,6 +89,29 @@ class Task(models.Model):
 
         super(Task, self).save(* args, ** kwargs)
 
+    def create(self, usernames=None, users=None):
+        """
+            Create tasks, does the final save and creates the Recipient objects
+        """
+        self.save()
+
+        if users is None:
+            users = []
+
+        for user in usernames:
+            user = user.strip()
+            if user.startswith('+'):
+                user = user[1:]
+
+            if "@" not in user:
+                users.append(User.objects.get(username=user))
+            else:
+                raise NotImplementedError()
+
+        for u in users:
+            Recipient(from_user=self.sender, to_user=u, task=self).save()
+
+
     def accept(self, user):
         logging.info("accepted")
         try:
@@ -108,6 +131,9 @@ class Task(models.Model):
             recipient.save()
         recipient.status = 'AC'
         recipient.save()
+        
+        Update(user=user, task=self, update_type='AC', message='').save()
+
         send_message({'action': 'accept', 'model': 'task', 'id': self.id})
         return self
 
@@ -123,6 +149,8 @@ class Task(models.Model):
 
         recipient.status = 'RJ'
         recipient.save()
+
+        Update(user=user, task=self, update_type='RE', message='').save()
 
         total_recipients =self.recipient_set.count()
         rejected_recipients =self.recipient_set.filter(status='RJ').count()
@@ -147,6 +175,8 @@ class Task(models.Model):
         recipient.status = 'CO'
         recipient.save()
 
+        Update(user=user, task=self, update_type='CO', message='').save()
+
         self.status = 'CO'
         self.save()
 
@@ -163,6 +193,9 @@ class Update(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     quote = models.ForeignKey('tasks.Quote', null=True, blank=True)
 
+    def __unicode__(self):
+        return u"f:%s t:%s s:%s" % (self.user, self.task, self.update_type)
+
 class Quote(models.Model):
     user = models.ForeignKey(User)
     task = models.ForeignKey(Task)
@@ -171,11 +204,15 @@ class Quote(models.Model):
     details = models.TextField()
     status = models.CharField(max_length=2, choices=QUOTE_STATUS)
 
+
 class Recipient(models.Model):
     from_user = models.ForeignKey(User, related_name="tasks_sent")
     to_user = models.ForeignKey(User, related_name="tasks_received")
     task = models.ForeignKey(Task)
     status = models.CharField(max_length=2, choices=RECIPIENT_STATUS, default='PE')
+
+    def __unicode__(self):
+        return u"f:%s t:%s s:%s" % (self.from_user, self.to_user, self.status)
 
 class Attachment(models.Model):
     task = models.ForeignKey(Task)

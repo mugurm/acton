@@ -217,28 +217,14 @@ class TaskResource(ModelResource):
             logging.exception("error creating obj")
             return None
 
-        users = []
         usernames = bundle.data.get('users', [])
         if isinstance(usernames, basestring):
             usernames = usernames.split(',')
         
-        for user in usernames:
-            user = user.strip()
-            if user.startswith('+'):
-                user = user[1:]
-
-            if "@" not in user:
-                try:
-                    users.append(User.objects.get(username=user))
-                except User.DoesNotExist:
-                    raise BadRequest("user not found") # from tastypie.exceptions
-            else:
-                raise NotImplementedError()
-
-        for u in users:
-            Recipient(from_user=request.user, to_user=u, task=new_bundle.obj).save()
-
-        new_bundle.obj.save()
+        try:
+            new_bundle.obj.create(usernames=usernames)
+        except User.DoesNotExist:
+            raise BadRequest("user not found") # from tastypie.exceptions
 
         send_message({'action': 'create', 'model': 'task', 'id': new_bundle.obj.id})
 
