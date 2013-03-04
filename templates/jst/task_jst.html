@@ -1,9 +1,12 @@
 <script type="text/template" id="task-template">
-    <div class="task <% if(is_offer) { print('offer'); } %> <%= status %>">
+    <div class="task <% if(is_offer) { print('offer'); } %> <%= status %> 
+    <% if(sender.username === '{{ user.username }}') {
+        print('owner');
+    } %>">
         <% if( is_offer ) { %>
         <div class="task-header">
             <div class="task-offer">
-                <span class="task-offer-badge">Incentive</span>
+                <span class="task-offer-badge">Incentive </span>
                 <span class="task-offer-amount"><strong>$<%- bounty %></strong></span>
             </div>
         </div>
