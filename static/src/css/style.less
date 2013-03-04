@@ -27,8 +27,19 @@ body {
 }
 
 #main-content {
+    position: relative;
     padding-top: 60px;
     padding-bottom: 60px;
+}
+
+
+@media (max-width: 979px) {
+    .navbar-fixed-top {
+        position: relative;
+    }
+    #main-content {
+        padding-top: 0;
+    }
 }
 
 form {
@@ -62,9 +73,9 @@ form {
         
         input {
             margin: 0;
-            width: 900px;
+            width: 97.8%;
             font-size: 15px;
-            padding:8px;
+            padding:1%;
         }
     }
 
