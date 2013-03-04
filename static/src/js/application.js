@@ -144,14 +144,14 @@ function init () {
       var data = {
         description: this.val_description,
         users: this.val_users
-      }
+      };
 
       if (this.val_expire != '') {
-        data['expire'] = this.val_expire
+        data['expire'] = this.val_expire;
       }
 
       if (this.val_bounty != '') {
-        data['bounty'] = this.val_bounty
+        data['bounty'] = this.val_bounty;
       }
 
       var task = new Task(data);
@@ -165,15 +165,42 @@ function init () {
 
   });
 
+  App = Backbone.Model.extend({
+    defaults: function(){
+      return {
+        filter: "inbox"
+      };
+    }
+  });
+
   AppView = Backbone.View.extend({
-    el: $("main-content"),
+    el: $("#main-content"),
+
+    events: {
+      "click #tasks-nav a": "handleFilterChange"
+    },
 
     initialize: function(){
+      this.model.on('change', this.render, this);
+
       this.listenTo(Tasks, 'add', this.addOne);
       this.listenTo(Tasks, 'reset', this.addAll);
       this.listenTo(Tasks, 'all', this.render);
       Tasks.fetch();
       this.create_view = new CreateTaskView();
+    },
+
+    render : function(){
+      // Update filter nav visuals
+      this.$("#tasks-nav li").removeClass("active");
+      this.$("#tasks-nav li a[data-filter='" + this.model.get("filter") + "']").parent().addClass("active");
+    },
+
+    handleFilterChange : function(e){
+      var $a = $(e.currentTarget);
+      var filter = $a.data('filter');
+      app.set("filter", filter);
+      router.navigate("/inbox/" + filter, {trigger:true});
     },
 
     addOne: function(task) {
@@ -185,6 +212,16 @@ function init () {
       Tasks.each(this.addOne, this);
     }
   });
+
+  AppRouter = Backbone.Router.extend({
+    routes: {
+      "/inbox/:view_filter": "setViewFilter"
+    },
+
+    setViewFilter: function(view_filter) {
+      console.log("vf", view_filter);
+    }
+  });
 }
 
 
@@ -193,5 +230,15 @@ $(function() {
     // DOM is ready and therefore we can compile templates.
     init();
 
-    var App = new AppView();
+    app = new App();
+    appView = new AppView({model: app});
+    router = new AppRouter();
+
+    var enablePushState = true;
+
+    // Disable for older browsers
+    var pushState = !!(enablePushState && window.history && window.history.pushState);
+    Backbone.history.start({ pushState: pushState });
+
+    router.navigate("/inbox/inbox", {trigger: true});
 });
