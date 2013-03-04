@@ -3,4 +3,4 @@ http://{{ site.domain }}{% url "registration_activate" activation_key %}
 
 this link expires in {{ expiration_days }} days.
 
-The Acton Team!
+The Akton Team!
