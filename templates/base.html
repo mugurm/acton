@@ -29,35 +29,7 @@
     <title>Acton!</title>
 </head>
 <body>
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="brand" href="#">Acton</a>
-          <div class="nav-collapse collapse">
-            <!-- <ul class="nav">
-              <li class="active"><a href="#">Home</a></li>
-              <li><a href="#about">About</a></li>
-              <li><a href="#contact">Contact</a></li>
-            </ul> -->
-            <ul class="nav pull-right">
-
-              {% if user.is_authenticated %}             
-              <li><a href="{% url "auth_logout" %}">{{ user.username }} | Sign out</a></li>              
-              {% else %}
-              <li><a href="{% url "registration_register" %}">Register</a></li>
-              <li><a href="{% url "auth_login" %}">Sign In</a></li>
-              {% endif %}
-
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div>
-      </div>
-    </div>
+    {% include "blocks/main_nav_block.html" %}
 
     <div id="main-content" class="container">
       {% block content %}{% endblock %}
@@ -67,23 +39,23 @@
     {% include "jst/task_jst.html" %}
 
     <script type="text/Javascript">
-  // using jQuery
-  function getCookie(name) {
-      var cookieValue = null;
-      if (document.cookie && document.cookie != '') {
-          var cookies = document.cookie.split(';');
-          for (var i = 0; i < cookies.length; i++) {
-              var cookie = jQuery.trim(cookies[i]);
-              // Does this cookie string begin with the name we want?
-              if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                  break;
-              }
-          }
-      }
-      return cookieValue;
-  }
-  var csrftoken = getCookie('csrftoken');
+    // using jQuery
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    var csrftoken = getCookie('csrftoken');
     </script>
     <script type="text/javascript">Backbone.Tastypie.csrfToken = csrftoken</script>
 
