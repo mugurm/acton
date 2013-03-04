@@ -80,7 +80,7 @@ function init () {
     },
 
     events: {
-      "keyup .task-input": "parse",
+      "keyup .task-input": "parse"
     },
 
     parse: function() {
@@ -115,6 +115,24 @@ function init () {
       this.parse_description.html(this.val_description);
       this.parse_expire.html("Expires in " + this.val_expire + " days.");
       this.parse_bounty.html("$" + this.val_bounty);
+
+      if (!this.val_users) {
+        this.$(".task-preview").hide(250);
+      } else {
+        this.$(".task-preview").show(250);
+      }
+
+      if (!this.val_bounty) {
+        this.$(".bounty").fadeOut(250);
+      } else {
+        this.$(".bounty").fadeIn(250);
+      }
+
+      if (!this.val_expire) {
+        this.$(".expire").fadeOut(250);
+      } else {
+        this.$(".expire").fadeIn(250);
+      }
     },
 
     render: function() {

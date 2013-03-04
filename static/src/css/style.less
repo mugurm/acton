@@ -47,7 +47,6 @@ form {
     padding-top:40px;
     margin-top: -50px;
     margin-bottom: 20px;
-    // background-color: white;
     background-image: -webkit-linear-gradient(top,white,hsl(0, 0%, 95%));
 
     form {
@@ -58,6 +57,25 @@ form {
             width: 900px;
             font-size: 15px;
             padding:8px;
+        }
+    }
+
+    .task-preview {
+        // Initially hidden until we parse somethign.
+        display: none;
+        margin-top: 10px;
+        margin-bottom: 0;
+        .task-terms{
+            .bounty {
+                font-weight: bold;
+                // Initially hidden until we parse somethign.
+                display: none;
+            }
+
+            .expire {
+                // Initially hidden until we parse somethign.
+                display: none;                
+            }
         }
     }
 }
