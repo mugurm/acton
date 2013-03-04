@@ -1,6 +1,6 @@
 <!doctype html>
-<html lang="en">
 {% load staticfiles %}
+<html lang="en">
 <head>  
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,8 +14,8 @@
     <script type="text/javascript" src="{% static 'libs/backbone-tastypie.js' %}"></script>
     <!-- Source javascript -->
 
-    <!-- Main sample application -->
-    <script src="{% static 'src/js/application.js' %}" type="text/javascript" charset="utf-8"></script>
+    <!-- Page javascript -->
+    {% block head_javascript %}{% endblock %}
 
     <!-- Styles -->
     <link href='http://fonts.googleapis.com/css?family=Titillium+Web:900' rel='stylesheet' type='text/css'>

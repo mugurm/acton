@@ -84,7 +84,7 @@ function init () {
     },
 
     parse: function() {
-      var regex_users = this.regex_users.exec(this.input.val())
+      var regex_users = this.regex_users.exec(this.input.val());
       var regex_description = this.regex_blocks.exec(this.input.val());
       var regex_expire = this.regex_expire.exec(this.input.val());
       var regex_bounty = this.regex_bounty.exec(this.input.val());
@@ -113,8 +113,8 @@ function init () {
 
       this.parse_recipients.html(this.val_users);
       this.parse_description.html(this.val_description);
-      this.parse_expire.html(this.val_expire);
-      this.parse_bounty.html(this.val_bounty);
+      this.parse_expire.html("Expires in " + this.val_expire + " days.");
+      this.parse_bounty.html("$" + this.val_bounty);
     },
 
     render: function() {
@@ -132,7 +132,7 @@ function init () {
       this.listenTo(Tasks, 'reset', this.addAll);
       this.listenTo(Tasks, 'all', this.render);
       Tasks.fetch();
-      this.create_view = new CreateTaskView()
+      this.create_view = new CreateTaskView();
     },
 
     addOne: function(task) {
