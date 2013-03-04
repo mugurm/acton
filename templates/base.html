@@ -10,7 +10,7 @@
     <script src="{% static 'libs/underscore-min.js' %}" type="text/javascript" charset="utf-8"></script>
     <script src="{% static 'libs/backbone-min.js' %}" type="text/javascript" charset="utf-8"></script>
     <script src="{% static 'libs/bootstrap/js/bootstrap.min.js' %}" type="text/javascript" charset="utf-8"></script>
-    
+    <script type="text/javascript" src="{% static 'libs/backbone-tastypie.js' %}"></script>
     <!-- Source javascript -->
 
     <!-- Main sample application -->
@@ -58,6 +58,7 @@
 
     <!-- Include JST (JavaScript templates) -->
     {% include "jst/task_jst.html" %}
+    <script type="text/javascript">Backbone.Tastypie.csrfToken = $.cookie( 'csrftoken' );</script>
 
 </body>
 </html>

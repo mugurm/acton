@@ -38,3 +38,5 @@ nosetests.xml
 .DS_Store
 
 acton/test.db
+third
+

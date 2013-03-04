@@ -14,6 +14,7 @@ from .models import Task, Update, Recipient
 class UserResource(ModelResource):
     class Meta:
         queryset = User.objects.all()
+        excludes = ["password", "is_staff", "is_superuser"]
 
     def dehydrate(self, bundle):
         bundle.data['display_name'] = bundle.obj.username 
