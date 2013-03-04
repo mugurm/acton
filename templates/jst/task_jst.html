@@ -4,7 +4,7 @@
         <div class="task-header">
             <div class="task-offer">
                 <span class="task-offer-badge">Incentive</span>
-                <span class="task-offer-amount"><strong><%- bounty %></strong></span>
+                <span class="task-offer-amount"><strong>$<%- bounty %></strong></span>
             </div>
         </div>
         <% } %>
@@ -20,7 +20,7 @@
             <span class="task-expire pull-right">Expires <%= moment(expire).fromNow() %></span>
         </div>
         <blockquote class="task-description">
-            <p><%= description %></p>
+            <p><%- description %></p>
         </blockquote>
         <div class="task-footer clearfix">
 
