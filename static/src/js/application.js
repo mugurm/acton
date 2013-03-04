@@ -39,7 +39,7 @@ function init () {
           accepted: accepted
         },
         success: function(data) {
-          console.log("respond success", data);
+          app.fetchFilteredTasks();
         }
       });
     }
@@ -195,7 +195,7 @@ function init () {
       };
     },
 
-    updateTasks : function(){
+    fetchFilteredTasks : function(){
         Tasks.fetch({data:
         {
           filter: app.get("filter")
@@ -217,7 +217,7 @@ function init () {
       this.listenTo(Tasks, 'add', this.addOne);
       this.listenTo(Tasks, 'reset', this.addAll);
       this.listenTo(Tasks, 'all', this.render);
-      this.model.updateTasks();
+      this.model.fetchFilteredTasks();
       this.create_view = new CreateTaskView();
     },
 
@@ -232,8 +232,7 @@ function init () {
       var filter = $a.data('filter');
       app.set("filter", filter);
       router.navigate("/inbox/" + filter, {trigger:true});
-      $("#main-tasks-list").html("");
-      this.model.updateTasks();
+      this.model.fetchFilteredTasks();
     },
 
     addOne: function(task) {
@@ -242,6 +241,11 @@ function init () {
     },
 
     addAll: function() {
+      if (Tasks.length > 0) {
+        $("#main-tasks-list").html("");
+      } else {
+        $("#main-tasks-list").html("<p class='lead'>There are no tasks in this category.</p>");
+      }
       Tasks.each(this.addOne, this);
     }
   });
