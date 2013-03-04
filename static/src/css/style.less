@@ -126,10 +126,41 @@ form {
     overflow: hidden;
 
     &.offer {
-        background-color: #fefbed;
-
         .task-header {
-            background-color: #fff6d0;
+            background-color: rgba(254, 247, 209, 0.4);
+        }
+    }
+
+    &.PE {
+        .task-footer {  
+            .label.status.PE {
+                display: inline;
+            }
+            .btn-group.complete {
+                display: none;
+            }
+        }
+    }
+
+    &.AC {
+        .task-footer {
+            .label.status.AC {
+                display: inline;
+            }
+            .btn-group.respond {
+                display: none;
+            }
+        }
+    }
+
+    &.RJ {
+        .task-footer {
+            .label.status.RJ {
+                display: inline;
+            }
+            .btn-group.complete, .btn-group.respond {
+                display: none;
+            }
         }
     }
 
@@ -168,6 +199,10 @@ form {
     .task-footer{
         .side-pad;
         padding-bottom: 4px;
+
+        .label.status {
+            display: none;
+        }
     
         .task-actions {
             .btn-group {

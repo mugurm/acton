@@ -1,5 +1,5 @@
 <script type="text/template" id="task-template">
-    <div class="task <% if(is_offer) { print('offer'); } %>">
+    <div class="task <% if(is_offer) { print('offer'); } %> <%= status %>">
         <% if( is_offer ) { %>
         <div class="task-header">
             <div class="task-offer">
@@ -24,6 +24,10 @@
         </blockquote>
         <div class="task-footer clearfix">
 
+            <span class="status PE label label-info ">pending</span>
+            <span class="status AC label label-success ">accepted</span>
+            <span class="status RJ label label-important ">rejected</span>
+
             <% if( typeof tags !== "undefined") { %>
             <span class="task-tags">
             <% _.each(tags, function(i) { %>  
@@ -34,16 +38,22 @@
 
             <span class="task-actions pull-right">
                 <% if( can_forward ) { %>
-                <div class="btn-group">
+                <div class="btn-group forward">
                     <button class="btn btn-mini">Forward <i class="icon-forward"></i></button>
                 </div>
                 <% } %>
-                <div class="btn-group">
+                <div class="btn-group change">
                   <% if( can_change ) { %>  
                   <button class="btn btn-mini"><i class="icon-pencil"></i></button>
-                  <% } %>  
+                  <% } %>
+                </div>
+                <div class="btn-group respond">  
                   <button class="btn btn-mini btn-danger no">No</button>
                   <button class="btn btn-mini btn-success yes">Yes</button>
+                </div>
+                <div class="btn-group complete">  
+                  <button class="btn btn-mini btn-danger">Cancel and close</button>
+                  <button class="btn btn-mini btn-success">Complete</button>
                 </div>
             </span>
         </div>
