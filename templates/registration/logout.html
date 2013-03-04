@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+<div class="row">
+  <div class="span12">
+      <div>
+          <h1>Signed out</h1>
+          <p class="lead">You have successfuly logged out.</p>
+          <a class="btn btn-inverse btn-large" href="{% url "auth_login" %}">Sign In</a>
+      </div>
+  </div>
+</div>
+{% endblock %}
