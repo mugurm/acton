@@ -29,20 +29,11 @@
     <title>Acton!</title>
 </head>
 <body>
+    {% include "blocks/main_nav_block.html" %}
 
-    <div id="wrap">
-      <!-- All content should go in here -->
-      {% include "blocks/main_nav_block.html" %}
-
-      <div id="main-content" class="container">
-        {% block content %}{% endblock %}
-      </div> <!-- /container -->
-    </div>
-    <footer class="footer">
-      <div class="container">
-        <p><small>Acton, a Launch Festival hackathon project by Sebastian Serrano &amp; Mugur Marculescu.</small></p>
-      </div>
-    </footer>
+    <div id="main-content" class="container">
+    {% block content %}{% endblock %}
+    </div> <!-- /container -->
 
     <!-- Include JST (JavaScript templates) -->
     {% include "jst/task_jst.html" %}
