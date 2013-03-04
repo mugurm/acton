@@ -16,6 +16,7 @@ function init () {
 
   Task = Backbone.Model.extend({
     url: '/api/v1/task/',
+    
     defaults: function() {
       return {
         description: "no description...",
@@ -28,6 +29,19 @@ function init () {
         archived: false,
         status: "PE"
       };
+    },
+
+    respond : function(accepted){
+      $.ajax({
+        dataType: "json",
+        url: this.id + "respond/",
+        data: {
+          accepted: accepted
+        },
+        success: function(data) {
+          console.log("respond success", data);
+        }
+      });
     }
   });
 
@@ -47,6 +61,11 @@ function init () {
 
     template: JST.task,
 
+    events: {
+      "click .task-actions .btn.yes": "handleButtonClick",
+      "click .task-actions .btn.no": "handleButtonClick"
+    },
+
     initialize: function() {
       this.listenTo(this.model, 'change', this.render);
       this.listenTo(this.model, 'destroy', this.remove);
@@ -55,6 +74,10 @@ function init () {
     render: function() {
       this.$el.html(this.template(this.model.toJSON()));
       return this;
+    },
+
+    handleButtonClick : function(e){
+      this.model.respond($(e.target).hasClass("yes"));
     }
 
   });
