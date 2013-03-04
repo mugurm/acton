@@ -1,5 +1,6 @@
 import warnings
 
+from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import SiteProfileNotAvailable
 from django.contrib.auth.models import UserManager as BaseUserManager
@@ -9,6 +10,9 @@ from django.db import models
 from django.utils import timezone
 from django.utils.http import urlquote
 
+
+class Error(Exception):
+    pass
 
 class UserManager(BaseUserManager):
 
@@ -39,3 +43,20 @@ class UserManager(BaseUserManager):
 
 class User(AbstractUser):
     remote_user = models.BooleanField(default=False)
+
+    @classmethod
+    def get_or_create_remote_user(cls, user_id):
+        if "@" not in user_id:
+            raise Error('user_id should be of the form of an email')
+
+        username, domain = map(lambda x: x.strip(), user_id.split('@'))
+        if domain in settings.DOMAINS:
+            try:
+                user, created = User.objects.get(username=username)
+            except User.DoesNotExist:
+                raise Error('User is not external user and doesn\'t exist on our db')
+            else:
+                return user
+        else:
+            user, created = User.objects.get_or_create(username=user_id, remote=True)
+        return user
