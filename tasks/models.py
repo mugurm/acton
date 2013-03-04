@@ -21,6 +21,7 @@ RECIPIENT_STATUS = (
     ('PE', 'Pending'),
     ('AC', 'Accepted'),
     ('RJ', 'Rejected'),
+    ('CL', 'Closed'),
     ('CO', 'Completed'),
 )
 
@@ -39,6 +40,12 @@ QUOTE_STATUS = (
     ('AC', 'Accepted'),
     ('RE', 'Rejected'),
 )
+
+class Error(Exception):
+    pass
+
+class UnauthorizedError(Error):
+    pass
 
 class Task(models.Model):
     sender = models.ForeignKey(User, related_name="created_tasks")
@@ -73,10 +80,46 @@ class Task(models.Model):
         super(Task, self).save(* args, ** kwargs)
 
     def accept(self, user):
-        logging.error("accepted")
+        logging.info("accepted")
+        try:
+            recipient = self.recipient_set.filter(to_user=user).get()
+        except Recipient.DoesNotExist:
+            raise UnauthorizedError("user is not able")
+
+        if self.status in ['CO', 'RJ']:
+            raise Error('Task not in pending status')
+
+        self.status = 'AC'
+        self.accepted_by = user
+        self.save()
+        for recipient in self.recipient_set.all():
+            recipient.status = 'CL'
+            recipient.save()
+        recipient.status = 'AC'
+        recipient.save()
+
+        return self
 
     def reject(self, user):
-        logging.error("rejected")
+        logging.info("rejected")
+        try:
+            recipient = self.recipient_set.filter(to_user=user).get()
+        except Recipient.DoesNotExist:
+            raise UnauthorizedError("user is not able")
+
+        if recipient.status != 'PE':
+            raise Error('Task not in pending status')
+
+        recipient.status = 'RJ'
+        recipient.save()
+
+        total_recipients =self.recipient_set.count()
+        rejected_recipients =self.recipient_set.filter(status='RJ').count()
+        if self.status == 'PE' and total_recipients == rejected_recipients:
+            self.status = 'RJ'
+            self.save()
+
+        return self
 
 class Update(models.Model):
     user = models.ForeignKey(User)
