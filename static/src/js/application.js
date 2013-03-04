@@ -170,6 +170,14 @@ function init () {
       return {
         filter: "inbox"
       };
+    },
+
+    updateTasks : function(){
+        Tasks.fetch({data:
+        {
+          filter: app.get("filter")
+        }
+      });
     }
   });
 
@@ -186,7 +194,7 @@ function init () {
       this.listenTo(Tasks, 'add', this.addOne);
       this.listenTo(Tasks, 'reset', this.addAll);
       this.listenTo(Tasks, 'all', this.render);
-      Tasks.fetch();
+      this.model.updateTasks();
       this.create_view = new CreateTaskView();
     },
 
@@ -201,6 +209,8 @@ function init () {
       var filter = $a.data('filter');
       app.set("filter", filter);
       router.navigate("/inbox/" + filter, {trigger:true});
+      $("#main-tasks-list").html("");
+      this.model.updateTasks();
     },
 
     addOne: function(task) {
